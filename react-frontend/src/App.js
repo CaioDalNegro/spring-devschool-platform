@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Cadastro from "./pages/cadastro";
+import DashboardProfessor from "./pages/DashboardProfessor";
+import DashboardAluno from "./pages/DashboardAluno";
 
 function App() {
   return (
@@ -12,6 +14,13 @@ function App() {
       </Routes>
     </Router>
   );
+
+  //   return (
+  //   <div>
+  //     <DashboardProfessor />
+  //   </div>
+  // );
 }
 
 export default App;
+
