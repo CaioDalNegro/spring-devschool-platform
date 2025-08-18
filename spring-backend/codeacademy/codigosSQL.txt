@@ -1,0 +1,42 @@
+select * from aluno;
+
+select * from professor;
+
+select * from curso;
+
+select * from CursoAluno;
+
+
+
+create table aluno(
+	id_aluno uuid PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+	senha VARCHAR(100) NOT NULL unique
+)
+
+
+create table professor(
+	id_professor uuid PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+	senha VARCHAR(100) NOT NULL unique
+)
+
+
+create table curso(
+	id_curso uuid primary key,
+	nome varchar(100) not null,
+	id_professor uuid not null references professor(id_professor)
+);
+
+
+create table CursoAluno(
+	id_curso uuid not null references curso(id_curso),
+	id_aluno uuid not null references aluno(id_aluno),
+ 	PRIMARY KEY (id_curso, id_aluno)
+);
+
+
+
+drop table ;
