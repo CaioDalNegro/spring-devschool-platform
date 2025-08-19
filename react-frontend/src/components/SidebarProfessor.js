@@ -1,6 +1,6 @@
 import React from "react";
 import { BookOpen, ClipboardList, GraduationCap, User, LogOut } from "lucide-react";
-import "../styles/dashboard.css";
+import "../styles/sidebar.css";
 
 export default function Sidebar({ active, setActive }) {
   const menuItems = [

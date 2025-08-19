@@ -36,14 +36,18 @@
 /* Inputs */
 .cadastro-input,
 .cadastro-select {
-  width: 100%;
-  padding: 12px 15px;
+  width: 100%;             /* mesma largura */
+  padding: 12px 15px;      /* padding uniforme */
   margin-bottom: 20px;
-  border-radius: 10px;
   border: 1px solid #ccc;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 14px;         /* garante altura igual de texto */
   outline: none;
-  transition: all 0.3s ease;
+  box-sizing: border-box;  /* inclui padding e border no width */
+  appearance: none;        /* remove estilo nativo do select */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: white; /* garante fundo uniforme */
 }
 
 .cadastro-input:focus,

@@ -34,15 +34,24 @@
 }
 
 /* Inputs */
+/* Inputs e Select centralizados e do mesmo tamanho */
 .login-input,
 .login-select {
-  width: 100%;
-  padding: 12px;
+  width: 100%;           /* mesmo tamanho */
+  padding: 12px;         /* mesmo padding */
   margin: 8px 0;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   outline: none;
-  transition: border 0.3s;
+  font-size: 14px;       /* garante tamanho de fonte igual */
+  box-sizing: border-box; /* inclui padding e border no width */
+  appearance: none;       /* remove estilo nativo do select */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.login-select {
+  background-color: white; /* garante fundo igual ao input */
 }
 
 .login-input:focus,
@@ -54,7 +63,7 @@
 /* Botão */
 .login-btn {
   width: 100%;
-  background: #3b82f6;
+  background: #6a11cb;
   color: white;
   padding: 12px;
   border: none;

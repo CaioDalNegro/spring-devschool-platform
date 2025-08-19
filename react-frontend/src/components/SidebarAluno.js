@@ -1,7 +1,7 @@
 // src/components/SidebarAluno.js
 import React from "react";
 import { Home, BookOpen, BarChart3, User, LogOut } from "lucide-react";
-import "../styles/dashboard.css";
+import "../styles/sidebar.css";
 
 export default function SidebarAluno({ active, setActive }) {
   const menuItems = [
