@@ -13,11 +13,15 @@ function Login() {
 
   // Função de login
   const entrar = () => {
+    if (!email || !senha) {
+      alert("Por favor, preencha o email e a senha.");
+      return;
+    }
     // Escolhe a URL do backend de acordo com o tipo de usuário
-    const url =
-      tipo === "ALUNO"
-        ? "http://localhost:8080/api/alunos/login"
-        : "http://localhost:8080/api/professores/login";
+  const url =
+    tipo === "ALUNO"
+      ? "http://localhost:8080/api/alunos/login"
+      : "http://localhost:8080/api/professores/login";
 
     // Chamada HTTP POST para autenticação
     fetch(url, {

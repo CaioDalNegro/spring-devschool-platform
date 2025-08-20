@@ -4,6 +4,7 @@ import br.com.codeacademyia.codeacademy.model.Aluno;
 import br.com.codeacademyia.codeacademy.model.Professor;
 import br.com.codeacademyia.codeacademy.service.ProfessorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,18 @@ public class ProfessorController {
 
     @PostMapping
     public Professor criarUsuario(@RequestBody Professor professor) {
+
         return service.add(professor);
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody Professor professor){
-        return service.login(professor);
+    public ResponseEntity<?> login(@RequestBody Professor professor) {
+        Professor logado = service.login(professor);
+        if (logado != null) {
+            return ResponseEntity.ok(logado);
+        } else {
+            return ResponseEntity.status(401).body("Email ou senha inválidos");
+        }
     }
 
 }

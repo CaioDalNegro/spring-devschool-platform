@@ -16,9 +16,11 @@ public class ProfessorService {
         return repository.save(p);
     }
 
-    public boolean login(Professor professor){
-        return repository.existsByEmailAndSenha(professor.getEmail(), professor.getSenha());
+    public Professor login(Professor professor) {
+        return repository.findByEmailAndSenha(professor.getEmail(), professor.getSenha())
+                .orElse(null);
     }
+
 
     public List<Professor> getProfessores() {
         return repository.findAll();

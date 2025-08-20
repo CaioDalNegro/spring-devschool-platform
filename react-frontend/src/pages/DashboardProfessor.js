@@ -100,7 +100,8 @@ export default function DashboardProfessor() {
       </main>
 
       {/* Modal */}
-      {isModalOpen && (
+      {
+      isModalOpen && (
         <div className="modal-overlay">
           <div className="modal">
             <h2>Criar Nova Turma</h2>
