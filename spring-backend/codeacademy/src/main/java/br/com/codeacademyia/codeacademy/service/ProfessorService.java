@@ -25,4 +25,8 @@ public class ProfessorService {
     public List<Professor> getProfessores() {
         return repository.findAll();
     }
+
+    public Professor findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
 }

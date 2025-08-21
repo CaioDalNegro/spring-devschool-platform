@@ -1,5 +1,6 @@
 package br.com.codeacademyia.codeacademy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,6 +24,7 @@ public class Curso {
 
     @ManyToOne
     @JoinColumn(name = "id_professor")
+    @JsonBackReference
     private Professor professor;
 
     @ManyToMany

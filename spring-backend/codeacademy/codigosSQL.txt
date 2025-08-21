@@ -4,8 +4,9 @@ select * from professor;
 
 select * from curso;
 
-select * from CursoAluno;
+select * from turma;
 
+select * from turmaAluno;
 
 
 create table aluno(
@@ -31,12 +32,22 @@ create table curso(
 );
 
 
-create table CursoAluno(
-	id_curso uuid not null references curso(id_curso),
-	id_aluno uuid not null references aluno(id_aluno),
- 	PRIMARY KEY (id_curso, id_aluno)
+CREATE TABLE turma (
+    id_turma UUID PRIMARY KEY,
+    id_curso UUID NOT NULL,
+    nome_turma VARCHAR(100) NOT NULL,
+    qtd_alunos INT DEFAULT 0,
+    qtd_desafios INT DEFAULT 0,
+    FOREIGN KEY (id_curso) REFERENCES curso(id_curso)
+        ON DELETE CASCADE
 );
 
+
+CREATE TABLE turmaAluno (
+    id_turma UUID NOT NULL REFERENCES turma(id_turma) ON DELETE CASCADE,
+    id_aluno UUID NOT NULL REFERENCES aluno(id_aluno) ON DELETE CASCADE,
+    PRIMARY KEY (id_turma, id_aluno)
+);
 
 
 drop table ;

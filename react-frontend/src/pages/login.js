@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import "../styles/login.css"; // Import do CSS específico da tela Login
 
+
+
 function Login() {
   // Estados do componente
   const [email, setEmail] = useState(""); // Armazena o email digitado
@@ -11,42 +13,42 @@ function Login() {
   // Hook do React Router para navegação entre telas
   const navigate = useNavigate();
 
-  // Função de login
+  // Função de loginconst
   const entrar = () => {
-    if (!email || !senha) {
-      alert("Por favor, preencha o email e a senha.");
-      return;
-    }
-    // Escolhe a URL do backend de acordo com o tipo de usuário
-  const url =
-    tipo === "ALUNO"
-      ? "http://localhost:8080/api/alunos/login"
-      : "http://localhost:8080/api/professores/login";
+      if (!email || !senha) {
+        alert("Por favor, preencha o email e a senha.");
+        return;
+      }
 
-    // Chamada HTTP POST para autenticação
-    fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha }),
-    })
-      .then((res) => {
-        // Se o backend retornar erro (status != 200)
-        if (!res.ok) throw new Error("Login inválido");
-        return res.json(); // Retorna o JSON do usuário
-      })
-      .then((usuario) => {
-        // Log para debug (pode remover em produção)
-        console.log("Usuário logado:", usuario);
+      const url =
+        tipo === "ALUNO"
+          ? "http://localhost:8080/api/alunos/login"
+          : "http://localhost:8080/api/professores/login";
 
-        // Redireciona para a tela correta de acordo com o tipo de usuário
-        if (tipo === "ALUNO") {
-          navigate("/home-aluno", { state: { usuario } });
-        } else {
-          navigate("/home-professor", { state: { usuario } });
-        }
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
       })
-      .catch(() => alert("Email ou senha incorretos")); // Alerta em caso de erro
-  };
+        .then((res) => {
+          if (!res.ok) throw new Error("Login inválido");
+          return res.json();
+        })
+        .then((data) => {
+          // 🔑 agora o backend deve devolver { token, role }
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("role", data.role);
+
+          // Navegar de acordo com o role que veio do token
+          if (data.role === "ALUNO") {
+            navigate("/home-aluno");
+          } else {
+            navigate("/home-professor");
+          }
+        })
+        .catch(() => alert("Email ou senha incorretos"));
+    };
+
 
   // Função para navegar para a tela de cadastro
   const irParaCadastro = () => {

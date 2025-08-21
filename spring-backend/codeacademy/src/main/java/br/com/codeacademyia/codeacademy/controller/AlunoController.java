@@ -2,16 +2,15 @@ package br.com.codeacademyia.codeacademy.controller;
 
 import java.util.List;
 
+import br.com.codeacademyia.codeacademy.config.JwtUtil;
+import br.com.codeacademyia.codeacademy.model.LoginResponse;
+import br.com.codeacademyia.codeacademy.model.Professor;
+import br.com.codeacademyia.codeacademy.model.TipoUsuario;
 import br.com.codeacademyia.codeacademy.service.AlunoService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.codeacademyia.codeacademy.model.Aluno; // Entidade Aluno
 
@@ -42,15 +41,26 @@ public class AlunoController {
 
     //Valida o login do aluno.
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Aluno aluno){
-        boolean logado = service.login(aluno);
-
-        if (logado) {
-            // Retorna o aluno logado como resposta HTTP 200 OK
-            return ResponseEntity.ok(aluno);
+    public ResponseEntity<?> login(@RequestBody Aluno aluno) {
+        Aluno logado = service.login(aluno);
+        if (logado != null) {
+            // 🔑 gera JWT
+            String token = JwtUtil.generateToken(logado.getEmail(), "ALUNO");
+            return ResponseEntity.ok(new LoginResponse(token, TipoUsuario.ALUNO));
         } else {
-            // Retorna mensagem de erro com status 401 Unauthorized
             return ResponseEntity.status(401).body("Email ou senha inválidos");
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getUsuarioLogado(@RequestHeader("Authorization") String authHeader){
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+            return ResponseEntity.status(401).body("token ausente");
+        }
+
+        String token = authHeader.substring(7);
+        String email = JwtUtil.getUsername(token);
+        Aluno aluno = service.findByEmail(email);
+        return ResponseEntity.ok(aluno);
     }
 }

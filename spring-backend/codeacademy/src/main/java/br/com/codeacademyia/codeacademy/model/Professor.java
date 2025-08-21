@@ -1,5 +1,6 @@
 package br.com.codeacademyia.codeacademy.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,6 +30,7 @@ public class Professor {
 
 
     @OneToMany(mappedBy = "professor")
+    @JsonManagedReference
     private List<Curso> cursos = new ArrayList<>();
 
 

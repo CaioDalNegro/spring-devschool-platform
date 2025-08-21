@@ -2,6 +2,25 @@ import React, { useState, useEffect } from "react";
 import { PlusCircle, Users, BookOpen, BarChart3 } from "lucide-react";
 import Sidebar from "../components/SidebarProfessor";
 import "../styles/dashboard.css";
+import { jwtDecode } from "jwt-decode";
+
+const token = localStorage.getItem("token");
+let decoded = null;
+
+if (token) {
+  try {
+    decoded = jwtDecode(token);
+    console.log(decoded.sub);  // email
+    console.log(decoded.role); // role
+  } catch (error) {
+    console.error("Token inválido:", error);
+    localStorage.removeItem("token"); // limpa token quebrado
+  }
+} else {
+  console.warn("Nenhum token encontrado, redirecionando para login...");
+  // aqui você pode redirecionar para /login
+}
+
 
 export default function DashboardProfessor() {
   
@@ -11,20 +30,25 @@ export default function DashboardProfessor() {
   // Estado para armazenar as turmas vindas do backend
   const [turmas, setTurmas] = useState([]);
 
+  const [cursos, setCursos] = useState([]);
+
+  const [isModalOpenCurso, setIsModalOpenCurso] = useState(false);
+
   // Estado para controlar a exibição do modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
   // Estados para os campos do formulário do modal
   const [novaTurmaNome, setNovaTurmaNome] = useState("");
   const [novaTurmaAlunos, setNovaTurmaAlunos] = useState("");
 
-  // useEffect para buscar turmas do backend ao montar o componente
-  useEffect(() => {
-    fetch("http://localhost:8080/api/turmas") // endpoint do backend
-      .then((res) => res.json())
-      .then((data) => setTurmas(data)) // salva as turmas no estado
-      .catch((err) => console.error("Erro ao buscar turmas:", err));
-  }, []); // array vazio = executa apenas 1 vez
+
+ // Função para abrir o modal curso
+  const openModalCurso = () => setIsModalOpenCurso(true);
+
+  // Função para fechar o modal curso
+  const closeModalCurso = () => setIsModalOpenCurso(false);
 
   // Função para abrir o modal
   const openModal = () => setIsModalOpen(true);
@@ -32,37 +56,74 @@ export default function DashboardProfessor() {
   // Função para fechar o modal
   const closeModal = () => setIsModalOpen(false);
 
-  // Função chamada ao enviar o formulário de criar nova turma
-  const criarTurma = (e) => {
-    e.preventDefault(); // evita refresh da página
+    // Buscar turmas
+    useEffect(() => {
+      const token = localStorage.getItem("token");
 
-    // Cria objeto com os dados da nova turma
-    const novaTurma = {
-      nome: novaTurmaNome,
-      alunos: parseInt(novaTurmaAlunos),
-      desafios: 0, // inicialmente 0 desafios
-    };
-    
-    // Envia para o backend
-    fetch("http://localhost:8080/api/turmas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(novaTurma),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // Adiciona a nova turma à lista de turmas
-        setTurmas([...turmas, data]);
-
-        // Limpa campos do formulário
-        setNovaTurmaNome("");
-        setNovaTurmaAlunos("");
-
-        // Fecha o modal
-        closeModal();
+      fetch("http://localhost:8080/api/turmas", {
+        headers: {
+          "Authorization": `Bearer ${token}`,   // 👈 JWT vai aqui
+          "Content-Type": "application/json"
+        }
       })
-      .catch((err) => console.error("Erro ao criar turma:", err));
-  };
+        .then((res) => res.json())
+        .then((data) => setTurmas(data))
+        .catch((err) => console.error("Erro ao buscar turmas:", err));
+    }, []);
+
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+
+      fetch("http://localhost:8080/api/cursos/meus", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => setCursos(data))
+        .catch(err => console.error("Erro ao buscar cursos:", err));
+    }, []);
+
+    console.log("cursos:" + cursos);
+
+    // Criar turma
+    const criarTurma = (e) => {
+      e.preventDefault();
+
+      const novaTurma = {
+        nome: novaTurmaNome,
+        alunos: parseInt(novaTurmaAlunos),
+        desafios: 0,
+      };
+
+      const token = localStorage.getItem("token");
+
+      fetch("http://localhost:8080/api/turmas", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,   // 👈 JWT também aqui
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(novaTurma),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setTurmas([...turmas, data]);
+          setNovaTurmaNome("");
+          setNovaTurmaAlunos("");
+          closeModal();
+        })
+        .catch((err) => console.error("Erro ao criar turma:", err));
+    };
+
+//   const novoCurso = {
+//     e.preventDefault();
+//
+//     const novoCurso = {
+//
+//     }
+//   }
 
   return (
     <div className="dashboard-container">
@@ -76,6 +137,9 @@ export default function DashboardProfessor() {
           <h1>Meus Cursos</h1>
           <button className="create-btn" onClick={openModal}>
             <PlusCircle size={20} /> Criar Nova Turma
+          </button>
+          <button className="create-btn" onClick={openModal}>
+             <PlusCircle size={20} /> Criar Novo Curso
           </button>
         </div>
 

@@ -9,4 +9,7 @@ import java.util.UUID;
 public interface CursoRepository extends JpaRepository<Curso, UUID> {
 
     List<Curso> findAllByNome(String nome);
+
+    List<Curso> findByProfessorId(UUID professorId);
+
 }

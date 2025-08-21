@@ -21,7 +21,11 @@ public class AlunoService {
     }
 
 
-    public boolean login(Aluno aluno) {
-        return repository.existsByEmailAndSenha(aluno.getEmail(), aluno.getSenha());
+    public Aluno login(Aluno aluno) {
+        return (Aluno) repository.findByEmailAndSenha(aluno.getEmail(), aluno.getSenha()).orElse(null);
+    }
+
+    public Aluno findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }

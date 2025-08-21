@@ -3,6 +3,25 @@ import React, { useState } from "react";
 import { Users, BookOpen, BarChart3, PlusCircle } from "lucide-react";
 import SidebarAluno from "../components/SidebarAluno";
 import "../styles/dashboard.css";
+import { jwtDecode } from "jwt-decode";
+
+const token = localStorage.getItem("token");
+let decoded = null;
+
+if (token) {
+  try {
+    decoded = jwtDecode(token);
+    console.log(decoded.sub);  // email
+    console.log(decoded.role); // role
+  } catch (error) {
+    console.error("Token inválido:", error);
+    localStorage.removeItem("token"); // limpa token quebrado
+  }
+} else {
+  console.warn("Nenhum token encontrado, redirecionando para login...");
+  // aqui você pode redirecionar para /login
+}
+
 
 export default function DashboardAluno() {
   const [active, setActive] = useState("meusCursos");
