@@ -145,6 +145,34 @@ body, html {
   color: #ffffff;
 }
 
+.lista-turmas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* espaço entre turmas */
+  margin-top: 10px;
+}
+
+.turma-item {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  padding: 8px 12px;
+  border-radius: 6px;
+  align-items: center;
+}
+
+.turma-item span {
+  margin-right: 20px;
+}
+
+
+.turma-card p {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: grey;
+}
+
 .turma-info {
   display: flex;
   align-items: center;

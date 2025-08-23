@@ -1,14 +1,13 @@
 package br.com.codeacademyia.codeacademy.controller;
 
 import java.util.List;
+import java.util.UUID;
 
+import br.com.codeacademyia.codeacademy.model.Curso;
+import br.com.codeacademyia.codeacademy.repository.CursoRepository;
+import br.com.codeacademyia.codeacademy.service.TurmaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.codeacademyia.codeacademy.model.Turma;
 import br.com.codeacademyia.codeacademy.repository.TurmaRepository;
@@ -19,17 +18,35 @@ import br.com.codeacademyia.codeacademy.repository.TurmaRepository;
 public class TurmaController {
 
     @Autowired
-    private TurmaRepository turmaRepository;
+    private TurmaService service;
+    @Autowired
+    private CursoRepository cursoRepository;
 
     // GET -> retorna todas as turmas
     @GetMapping
     public List<Turma> getAll() {
-        return turmaRepository.findAll();
+        return service.listarTodas();
     }
 
     // POST -> cria nova turma
     @PostMapping
-    public Turma createTurma(@RequestBody Turma turma) {
-        return turmaRepository.save(turma);
+    public Turma criarTurma(@RequestBody Turma turma, @RequestParam String cursoId){
+        UUID cid = UUID.fromString(cursoId);
+        Curso curso = cursoRepository.findById(cid)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+        turma.setCurso(curso);
+        return service.criarTurma(turma);
     }
+
+
+    // GET -> turmas de um curso específico
+    @GetMapping("/curso/{cursoId}")
+    public List<Turma> getTurmasPorCurso(@PathVariable String cursoId){
+        System.out.println("CursoId recebido: " + cursoId);
+        List<Turma> turmas = service.listarTurmasPorIdCurso(cursoId);
+        System.out.println("lista de turmas: " + turmas);
+        return turmas;
+    }
+
+
 }

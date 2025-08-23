@@ -28,6 +28,7 @@ create table professor(
 create table curso(
 	id_curso uuid primary key,
 	nome varchar(100) not null,
+	descricao varchar(100),
 	id_professor uuid not null references professor(id_professor)
 );
 
@@ -49,5 +50,6 @@ CREATE TABLE turmaAluno (
     PRIMARY KEY (id_turma, id_aluno)
 );
 
+alter table curso add column descricao varchar(100);
 
 drop table ;

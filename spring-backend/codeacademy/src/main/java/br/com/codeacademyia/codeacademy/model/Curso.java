@@ -1,8 +1,10 @@
 package br.com.codeacademyia.codeacademy.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
@@ -22,16 +24,20 @@ public class Curso {
     @Column(name = "nome")
     private String nome;
 
+    @Column(name = "descricao")
+    private String descricao;
+
     @ManyToOne
     @JoinColumn(name = "id_professor")
     @JsonBackReference
     private Professor professor;
 
-    @ManyToMany
-    @JoinTable(
-            name = "curso_aluno",
-            joinColumns = @JoinColumn(name = "id_curso"),
-            inverseJoinColumns = @JoinColumn(name = "id_aluno")
-    )
-    private List<Aluno> alunos = new ArrayList<>();
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonIgnoreProperties("curso")
+    private List<Turma> turmas = new ArrayList<>();
+
+
+
+
 }
