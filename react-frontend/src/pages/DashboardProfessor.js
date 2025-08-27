@@ -356,44 +356,41 @@ export default function DashboardProfessor() {
 
     { /*modal de curso*/}
     {
-        isModalOpenCurso && (
-            <div>
-                <div className="modal">
-                    <h2>Criar Novo Curso </h2>
-                    <form onSubmit={criarCurso}>
-                      <label>
-                        Nome do curso:
-                        <input
-                          type="text"
-                          placeholder="Ex: Java para iniciantes"
-                          value={novoCursoNome}
-                          onChange={(e) => setNovoCursoNome(e.target.value)}
-                          required
-                        />
-                      </label>
-                    <label>
-                        Descricao do curso:
-                        <input
-                          type="text"
-                          placeholder="Ex: curso do basico ao avançado em java"
-                          value={novoCursoDesc}
-                          onChange={(e) => setNovoCursoDesc(e.target.value)}
-                          required
-                        />
-                      </label>
-                      <div className="modal-buttons">
-                        <button type="submit">Criar</button>
-                        <button type="button" onClick={closeModalCurso}>
-                          Cancelar
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-
-            </div>
-
-        )
-    }
+      isModalOpenCurso && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Criar Novo Curso </h2>
+            <form onSubmit={criarCurso}>
+              <label>
+                Nome do curso:
+                <input
+                  type="text"
+                  placeholder="Ex: Java para iniciantes"
+                  value={novoCursoNome}
+                  onChange={(e) => setNovoCursoNome(e.target.value)}
+                  required
+                />
+              </label>
+              <label>
+                Descrição do curso:
+                <input
+                  type="text"
+                  placeholder="Ex: curso do básico ao avançado em Java"
+                  value={novoCursoDesc}
+                  onChange={(e) => setNovoCursoDesc(e.target.value)}
+                  required
+                />
+              </label>
+              <div className="modal-buttons">
+                <button type="submit">Criar</button>
+                <button type="button" onClick={closeModalCurso}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
