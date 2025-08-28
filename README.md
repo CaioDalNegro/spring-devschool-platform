@@ -110,7 +110,7 @@ O projeto:
 
 ---
 
-## 5. Observações Finais 
+## 5. Observações Finais
 
 - Não existe uma única forma de implementar; serão avaliados **qualidade do código, organização, testes e documentação**.
 - Priorize **segurança**, **performance** e **boa experiência do usuário**.
