@@ -4,6 +4,7 @@ import Sidebar from "../components/SidebarProfessor";
 import "../styles/dashboard.css";
 import { jwtDecode } from "jwt-decode";
 import {v4 as uuidv4} from 'uuid';
+import { useNavigate } from "react-router-dom";
 
 const token = localStorage.getItem("token");
 let decoded = null;
@@ -103,7 +104,7 @@ export default function DashboardProfessor() {
      }
    };
 
-
+const navigate = useNavigate();
 
 
 
@@ -189,7 +190,7 @@ export default function DashboardProfessor() {
         .catch(err => console.error("Erro ao criar turma:", err));
     };
 
-
+    
     // Criar curso
     const criarCurso = (e) => {
       e.preventDefault();
@@ -219,7 +220,12 @@ export default function DashboardProfessor() {
         })
         .catch((err) => console.error("Erro ao criar curso:", err));
     };
-
+    
+    const irParaTurmaClicada = (id) => {
+        navigate(`/paginaturma/${id}`, {state: {id}});
+    } 
+    
+    
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
@@ -259,6 +265,9 @@ export default function DashboardProfessor() {
                                 <span className="nome-turma">{turma.nome}</span>
                                 <span className="qtd-alunos">{turma.alunos} qtdd alunos </span>
                                 <span className="qtd-desafios">{turma.desafios} qtdd desafios</span>
+                                <button onClick={() => {
+                                  irParaTurmaClicada(turma.id);
+                                }}>Ver turma</button>
                               </div>
                             ))}
                           </div>

@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import Cadastro from "./pages/cadastro";
 import DashboardProfessor from "./pages/DashboardProfessor";
 import DashboardAluno from "./pages/DashboardAluno";
+import PaginaTurma from "./pages/Paginaturma"; 
 
 function App() {
   return (
@@ -13,15 +14,13 @@ function App() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/home-aluno" element={<DashboardAluno />} />
         <Route path="/home-professor" element={<DashboardProfessor />} />
+        
+        <Route path="/paginaturma/:id" element={<PaginaTurma />} />
+
       </Routes>
     </Router>
   );
 
-  //   return (
-  //   <div>
-  //     <DashboardProfessor />
-  //   </div>
-  // );
 }
 
 export default App;
