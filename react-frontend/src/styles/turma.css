@@ -1,0 +1,32 @@
+h1{
+    color: white;
+}
+
+.deixarTudoDeLado {
+    display: flex;
+}
+
+
+.atividades-lista {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.atividade-card {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.atividade-card h3 {
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.atividade-card p {
+  margin: 4px 0;
+  color: #555;
+}

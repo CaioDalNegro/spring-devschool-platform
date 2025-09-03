@@ -8,6 +8,10 @@ select * from turma;
 
 select * from turmaAluno;
 
+select * from atividade;
+
+select * from turmaAtividade;
+
 
 create table aluno(
 	id_aluno uuid PRIMARY KEY,
@@ -47,9 +51,24 @@ CREATE TABLE turma (
 CREATE TABLE turmaAluno (
     id_turma UUID NOT NULL REFERENCES turma(id_turma) ON DELETE CASCADE,
     id_aluno UUID NOT NULL REFERENCES aluno(id_aluno) ON DELETE CASCADE,
+    data_matricula date not null,
     PRIMARY KEY (id_turma, id_aluno)
 );
 
-alter table curso add column descricao varchar(100);
+create table atividade (
+	id_atividade UUID not null primary key,
+	id_turma UUID NOT NULL REFERENCES turma(id_turma) ON DELETE CASCADE,
+	titulo varchar(100) not null,
+	descricao varchar(100) not null,
+	data_entrega date not null,
+    data_publicacao date not null
+);
 
-drop table ;
+create table turmaAtividade(
+	id_turma UUID NOT NULL REFERENCES turma(id_turma) ON DELETE CASCADE,
+    id_atividade UUID NOT NULL REFERENCES atividade(id_atividade) ON DELETE CASCADE,
+    PRIMARY KEY (id_turma, id_atividade)
+);
+
+
+--- drop table ;
