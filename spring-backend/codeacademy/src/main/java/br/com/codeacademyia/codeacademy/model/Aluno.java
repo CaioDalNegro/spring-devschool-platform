@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,5 +27,11 @@ public class Aluno {
     @Column(name = "senha")
     private String senha;
 
-
+    @ManyToMany
+    @JoinTable(
+        name = "aluno_curso",
+        joinColumns = @JoinColumn(name = "id_aluno"),
+        inverseJoinColumns = @JoinColumn(name = "id_curso")
+    )
+    private List<Curso> cursos = new ArrayList<>();
 }

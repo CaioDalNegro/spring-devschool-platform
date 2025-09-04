@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.codeacademyia.codeacademy.model.Aluno; // Entidade Aluno
+import br.com.codeacademyia.codeacademy.model.Curso;
 
 /**
  * Controller responsável por gerenciar requisições relacionadas aos alunos.
@@ -25,24 +26,24 @@ import br.com.codeacademyia.codeacademy.model.Aluno; // Entidade Aluno
 public class AlunoController {
 
     // Serviço que contém a lógica de negócio dos alunos
-    private final AlunoService service;
+    private final AlunoService alunoService;
 
     //Retorna a lista de todos os alunos cadastrados.
     @GetMapping
     public List<Aluno> getAlunos() {
-        return service.getAlunos();
+        return alunoService.getAlunos();
     }
 
     //Cria um novo usuário do tipo aluno.
     @PostMapping
     public Aluno criarUsuario(@RequestBody Aluno usuario) {
-        return service.add(usuario);
+        return alunoService.add(usuario);
     }
 
     //Valida o login do aluno.
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Aluno aluno) {
-        Aluno logado = service.login(aluno);
+        Aluno logado = alunoService.login(aluno);
         if (logado != null) {
             // 🔑 gera JWT
             String token = JwtUtil.generateToken(logado.getEmail(), "ALUNO");
@@ -60,7 +61,18 @@ public class AlunoController {
 
         String token = authHeader.substring(7);
         String email = JwtUtil.getUsername(token);
-        Aluno aluno = service.findByEmail(email);
+        Aluno aluno = alunoService.findByEmail(email);
         return ResponseEntity.ok(aluno);
+    }
+
+    @GetMapping("/meus")
+    public List<Curso> getCursosDoAluno(@RequestHeader("Authorization") String authHeader) {
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new RuntimeException("Token ausente");
+        }
+        String token = authHeader.substring(7);
+        String email = JwtUtil.getUsername(token);
+
+        return alunoService.getCursosDoAluno(email);
     }
 }
