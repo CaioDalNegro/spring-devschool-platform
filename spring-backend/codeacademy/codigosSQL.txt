@@ -6,7 +6,7 @@ select * from curso;
 
 select * from turma;
 
-select * from turmaAluno;
+select * from turma_aluno;
 
 select * from atividade;
 
@@ -48,10 +48,10 @@ CREATE TABLE turma (
 );
 
 
-CREATE TABLE turmaAluno (
+CREATE TABLE turma_aluno (
     id_turma UUID NOT NULL REFERENCES turma(id_turma) ON DELETE CASCADE,
     id_aluno UUID NOT NULL REFERENCES aluno(id_aluno) ON DELETE CASCADE,
-    data_matricula date not null,
+    data_matricula date,
     PRIMARY KEY (id_turma, id_aluno)
 );
 

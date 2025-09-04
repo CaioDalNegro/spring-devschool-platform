@@ -2,6 +2,8 @@ package br.com.codeacademyia.codeacademy.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "turmaAluno")
+@Table(name = "turma_aluno")
 public class TurmaAluno {
 
     @EmbeddedId
@@ -26,11 +28,12 @@ public class TurmaAluno {
     private Aluno aluno;
 
     @Column(name = "data_matricula")
+    @CreatedDate
     private LocalDate dataMatricula;
 
     @Data
     @Embeddable
-    public class TurmaAlunoId implements Serializable {
+    public static class TurmaAlunoId implements Serializable {
         private UUID idTurma;
         private UUID idAluno;
     }

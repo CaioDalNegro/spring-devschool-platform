@@ -33,7 +33,7 @@ export default function PaginaTurma() {
   //PESSOAS ou alunos
   const [janelaAddAluno, setJanelaAddAluno] = useState(false);
   const [alunos, setAlunos] = useState([]);
-  const [idALuno, setIdALuno] = useState("");
+  const [emailDoAluno, setEmailDoAluno] = useState("");
  
   const abrirOuFecharJanelaDeAddAluno = () => {
     setJanelaAddAluno(!janelaAddAluno);
@@ -136,11 +136,53 @@ export default function PaginaTurma() {
     
   }
 
+  // ADD ALUNOS NA TURMA
   const addAluno = (e) => {
-    
-  }
-  
+    e.preventDefault();
+        
+      const novaturmaAluno = {
+        idTurma: id
+        
+      }
 
+
+        const token = localStorage.getItem("token");
+
+        fetch(`http://localhost:8080/api/turmaAlunos?emailAluno=${emailDoAluno}`, {
+          method: "POST",
+          headers:{
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(novaturmaAluno)
+        })
+        .then(res => res.json())
+        .then(data => {
+            setAlunos([...alunos, data]);
+            setEmailDoAluno("")
+            abrirOuFecharJanelaDeAddAluno();
+        })
+        .catch(err => console.error("Erro ao add aluno ",err));
+  };
+  
+  //BUSCAR TODAS OS ALUNOS da turma
+  //BUSCAR TODOS OS ALUNOS da turma
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    
+    fetch(`http://localhost:8080/api/turmaAlunos/${id}/alunos`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setAlunos(data))
+      .catch((err) => console.error("Erro ao buscar alunos:", err));
+  }, [id]);  
+        
+    
+        console.log("alunos:", alunos);
   
 
   return (
@@ -194,6 +236,20 @@ export default function PaginaTurma() {
                   <button className="create-btn" onClick={abrirOuFecharJanelaDeAddAluno}>
                     <PlusCircle size={20} /> Add Novo Aluno
                   </button>
+                  {/* TODAS AS PESSOAS EM ORDEM DE LANÇAMENTO */}
+                  <div className="atividades-lista">
+                    {alunos.length > 0 ? (
+                      alunos.map((aluno) => (
+                        <div key={aluno.id} className="atividade-card">
+                          <h3>Nome: {aluno.nome}</h3>
+                          <h3>Email: {aluno.email}</h3>
+                        </div>
+                      ))
+                    ) : (
+                      <p>Nenhum aluno cadastrado.</p>
+                    )}
+
+                  </div>
                 </div> 
               )
             )
@@ -264,12 +320,12 @@ export default function PaginaTurma() {
             <h2>Adicionar Novo Aluno </h2>
             <form onSubmit={addAluno}>
               <label>
-                ID do Aluno: 
+                email do Aluno: 
                 <input
                   type="text"
                   placeholder="1111 1111"
-                  value={idALuno}
-                  onChange={(e) => setIdALuno(e.target.value)}
+                  value={emailDoAluno}
+                  onChange={(e) => setEmailDoAluno(e.target.value)}
                   required
                 />
               </label>

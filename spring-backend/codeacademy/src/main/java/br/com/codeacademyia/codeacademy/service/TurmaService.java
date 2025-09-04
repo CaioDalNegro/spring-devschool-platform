@@ -2,6 +2,7 @@ package br.com.codeacademyia.codeacademy.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import br.com.codeacademyia.codeacademy.model.Curso;
@@ -25,6 +26,9 @@ public class TurmaService {
         return turmas != null ? turmas : new ArrayList<>();
     }
 
+    public Optional<Turma> procurarPorId(UUID id){
+        return turmaRepository.findById(id);
+    }
 
 
     public Turma criarTurma(Turma turma) {
