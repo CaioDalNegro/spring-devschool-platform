@@ -39,5 +39,8 @@ public class Atividade {
     @CreatedDate
     @Column(name = "data_publicacao", updatable = false)
     private LocalDate dataPublicacao;
+
+    @Column(name = "caminho")
+    private String caminho;
 }
 

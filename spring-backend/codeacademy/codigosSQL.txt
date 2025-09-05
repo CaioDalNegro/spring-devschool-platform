@@ -61,7 +61,8 @@ create table atividade (
 	titulo varchar(100) not null,
 	descricao varchar(100) not null,
 	data_entrega date not null,
-    data_publicacao date not null
+    data_publicacao date not null,
+    caminho varchar(255)
 );
 
 create table turmaAtividade(

@@ -24,6 +24,7 @@ export default function PaginaTurma() {
   const [nomeAtividade, setNomeAtividade] = useState("");
   const [dataEntrega, setDataEntrega] = useState("");
   const [descricaoAtividade, setDescricaoAtividade] = useState("");
+  const [file, setFile] = useState(null);
   
   const abrirOuFecharPublicacaoAtividade = () => {
     setJanelaCriarPublicacaoAtividades(!janelaCriarPublicacaoAtividades);
@@ -76,36 +77,48 @@ export default function PaginaTurma() {
   // CRIANDO ATIVIDADES NOVAS
   const criarAtividade = (e) => {
     e.preventDefault();
-    
-    const novaAtividade = {
-      //id: "",
-      idTurma: id,
-      titulo: nomeAtividade,
-      descricao: descricaoAtividade,
-      dataEntrega: dataEntrega,
-      //dataPublicacao: ""
-    }
+        
+    if (!file) {
+        alert("Escolha um PDF antes de enviar!");
+        return;
+      }
 
     const token = localStorage.getItem("token");
+    console.log(file, nomeAtividade, descricaoAtividade, dataEntrega);
 
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("atividade", new Blob([JSON.stringify({
+    idTurma: id,
+    titulo: nomeAtividade,
+    descricao: descricaoAtividade,
+    dataEntrega: dataEntrega
+  })], { type: "application/json" }));
+    
+    
     fetch(`http://localhost:8080/api/atividades`, {
       method: "POST",
       headers:{
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify(novaAtividade)
+      body: formData
+
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) return res.text().then(text => { throw new Error(text) });
+        return res.json();
+      })
     .then(data => {
         setAtividades([...atividades, data]);
         setNomeAtividade("");
         setDescricaoAtividade("");
         setDataEntrega(null);
+        setFile(null);
         abrirOuFecharPublicacaoAtividade();
     })
-    .catch(err => console.error("Erro ao criar turmas ",err));
+    .catch(err => console.error("Erro ao criar ativiidade ",err));
   };
+
 
   //BUSCAR TODAS AS ATIVIDADES
   useEffect(() => {
@@ -166,7 +179,6 @@ export default function PaginaTurma() {
   };
   
   //BUSCAR TODAS OS ALUNOS da turma
-  //BUSCAR TODOS OS ALUNOS da turma
   useEffect(() => {
     const token = localStorage.getItem("token");
     
@@ -221,6 +233,12 @@ export default function PaginaTurma() {
                           <p>{atividade.descricao}</p>
                           <p><strong>Data de entrega:</strong> {atividade.dataEntrega}</p>
                           <p><em>Publicado em: {atividade.dataPublicacao}</em></p>
+                          {atividade.caminho && (
+                            <a href={`http://localhost:8080/uploads/${atividade.caminho}`} target="_blank" rel="noopener noreferrer">
+                              Abrir PDF
+                            </a>
+
+                          )}
                         </div>
                       ))
                     ) : (
@@ -297,6 +315,15 @@ export default function PaginaTurma() {
 
                 />
                 </label>
+              <label>
+                Adicionar um PDF da atividade
+                <input 
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+                </label>
+
               <div className="modal-buttons">
                 <button type="submit">Criar</button>
                 <button
