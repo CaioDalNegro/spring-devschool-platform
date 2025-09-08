@@ -1,32 +1,161 @@
-h1{
-    color: white;
-}
-
-.deixarTudoDeLado {
-    display: flex;
-}
-
-
-.atividades-lista {
-  margin-top: 20px;
+/* Layout geral */
+.dashboard-container {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  background: linear-gradient(135deg, #312e81, #1e293b);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #f1f5f9;
 }
 
-.atividade-card {
-  background: #f8f9fa;
-  padding: 16px;
+/* Conteúdo principal */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* Header da turma */
+.turma-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #334155;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 6px 20px rgba(0,0,0,0.35);
+  margin-bottom: 20px;
+  animation: fadeIn 0.8s ease;
+}
+
+.turma-nome {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #e0e7ff;
+}
+
+.usuario-logado {
+  color: #c7d2fe;
+  font-weight: 500;
+}
+
+/* Tabs */
+.tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #475569;
+  color: #f1f5f9;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  background: #64748b;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  color: white;
+  box-shadow: 0 0 10px rgba(99,102,241,0.5);
+}
+
+/* Área do conteúdo */
+.tab-content {
+  background: #334155;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+  animation: fadeIn 0.8s ease;
+}
+
+/* Cabeçalho das seções */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.section-header h2 {
+  color: #f9fafb;
+}
+
+/* Botões */
+.btn {
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #2563eb;
+  box-shadow: 0 0 12px rgba(99,102,241,0.5);
+}
+
+.btn.small {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+}
+
+/* Cards */
+.card-list {
+  display: grid;
+  gap: 15px;
+}
+
+.card {
+  background: #475569;
+  padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.atividade-card h3 {
-  margin: 0 0 8px;
-  color: #333;
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(99,102,241,0.4);
 }
 
-.atividade-card p {
-  margin: 4px 0;
-  color: #555;
+.card h3 {
+  color: #e2e8f0;
+}
+
+.card p, 
+.card small {
+  color: #f1f5f9;
+}
+
+/* Links dentro do card */
+.card a {
+  color: #93c5fd;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+/* Animação */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

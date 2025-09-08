@@ -6,17 +6,29 @@ import { useNavigate } from "react-router-dom";
 export default function Sidebar({ active, setActive }) {
 const navigate = useNavigate();
   const menuItems = [
-    { id: "MinhasTurmas", label: "Minhas Turmas", icon: <BookOpen size={20} /> },       // Livro → representa as turmas/cursos
-    { id: "MeusDesafios", label: "Meus Desafios", icon: <ClipboardList size={20} /> },   // Lista → representa tarefas/desafios
-    { id: "MeusCursos", label: "Meus Cursos", icon: <GraduationCap size={20} /> },        // Chapéu de formatura → cursos
-    { id: "perfil", label: "Perfil", icon: <User size={20} /> },                           // Usuário → perfil
-  ];
+  { id: "MeusDesafios", label: "Meus Desafios", icon: <ClipboardList size={20} />, path: "/home-professor" },
+  { id: "MeusCursos", label: "Meus Cursos", icon: <GraduationCap size={20} />, path: "/home-professor" },
+  { id: "perfil", label: "Perfil", icon: <User size={20} />, path: "/perfil" },
+];
 
    const deslogar = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         navigate("/");
    }
+
+   const irParaDesafios = () => {
+      navigate("/home-professor"); // MUDAR AQUI FAZER ESSA PARTE DE DESAFIOS
+   }
+    
+   const irParaCursos = () => {
+      navigate("/home-professor");
+   }
+   
+   const irParaPerfil = () => {
+      navigate("/home-professor");
+   }
+   
 
   return (
     <aside className="sidebar">
@@ -27,7 +39,10 @@ const navigate = useNavigate();
             <li key={item.id}>
               <button
                 className={active === item.id ? "active" : ""}
-                onClick={() => setActive(item.id)}
+                onClick={() => {
+                  setActive(item.id)
+                  navigate(item.path);
+                }}
               >
                 {item.icon} {item.label}
               </button>

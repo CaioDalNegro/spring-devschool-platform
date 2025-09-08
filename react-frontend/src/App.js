@@ -5,6 +5,7 @@ import Cadastro from "./pages/cadastro";
 import DashboardProfessor from "./pages/DashboardProfessor";
 import DashboardAluno from "./pages/DashboardAluno";
 import PaginaTurma from "./pages/Paginaturma"; 
+import Perfil from "./pages/perfil"; 
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/home-aluno" element={<DashboardAluno />} />
         <Route path="/home-professor" element={<DashboardProfessor />} />
-        
+        <Route path="/perfil" element={<Perfil />} />
+    
         <Route path="/paginaturma/:id" element={<PaginaTurma />} />
 
       </Routes>

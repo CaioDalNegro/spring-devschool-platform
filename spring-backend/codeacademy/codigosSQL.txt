@@ -12,6 +12,11 @@ select * from atividade;
 
 select * from turmaAtividade;
 
+select * from aulas;
+
+
+
+
 
 create table aluno(
 	id_aluno uuid PRIMARY KEY,
@@ -72,4 +77,14 @@ create table turmaAtividade(
 );
 
 
+
+
+create table aulas(
+	id_aula uuid unique not null primary key,
+	id_turma uuid not null references turma(id_turma),
+	titulo varchar(255) not null,
+	descricao varchar(255),
+	data_publicacao date not null,
+	caminho varchar(255)
+);
 --- drop table ;
