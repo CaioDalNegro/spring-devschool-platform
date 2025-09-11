@@ -1,11 +1,14 @@
 package br.com.codeacademyia.codeacademy.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import br.com.codeacademyia.codeacademy.config.JwtUtil;
 import br.com.codeacademyia.codeacademy.model.LoginResponse;
 import br.com.codeacademyia.codeacademy.model.Professor;
 import br.com.codeacademyia.codeacademy.model.TipoUsuario;
+import br.com.codeacademyia.codeacademy.repository.AlunoRepository;
 import br.com.codeacademyia.codeacademy.service.AlunoService;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +30,7 @@ public class AlunoController {
 
     // Serviço que contém a lógica de negócio dos alunos
     private final AlunoService alunoService;
+    private final AlunoRepository alunoRepository;
 
     //Retorna a lista de todos os alunos cadastrados.
     @GetMapping
@@ -65,14 +69,10 @@ public class AlunoController {
         return ResponseEntity.ok(aluno);
     }
 
-    @GetMapping("/meus")
-    public List<Curso> getCursosDoAluno(@RequestHeader("Authorization") String authHeader) {
-        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new RuntimeException("Token ausente");
-        }
-        String token = authHeader.substring(7);
-        String email = JwtUtil.getUsername(token);
-
-        return alunoService.getCursosDoAluno(email);
+    // GET /alunos/{id}/cursos -> mostra cursos e turmas
+    @GetMapping("/{id}/cursos")
+    public Aluno getCursosDoAluno(@PathVariable UUID id) {
+        Optional<Aluno> aluno = alunoRepository.findById(id);
+        return aluno.orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
 }

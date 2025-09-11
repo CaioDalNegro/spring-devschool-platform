@@ -1,6 +1,7 @@
 package br.com.codeacademyia.codeacademy.service;
 
 import br.com.codeacademyia.codeacademy.model.Aluno;
+import br.com.codeacademyia.codeacademy.model.Curso;
 import br.com.codeacademyia.codeacademy.model.DTO.AlunoDTO;
 import br.com.codeacademyia.codeacademy.model.DTO.TurmaAlunoDTO;
 import br.com.codeacademyia.codeacademy.model.Turma;
@@ -9,12 +10,10 @@ import br.com.codeacademyia.codeacademy.model.mapper.TurmaAlunoMapper;
 import br.com.codeacademyia.codeacademy.repository.TurmaAlunoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import br.com.codeacademyia.codeacademy.model.DTO.AlunoDTO;
 import br.com.codeacademyia.codeacademy.model.mapper.AlunoMapper;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,27 +26,36 @@ public class TurmaAlunoService {
     private final AlunoService alunoService;
     private final AlunoMapper alunoMapper;
 
-    public TurmaAlunoDTO add(TurmaAlunoDTO turmaAlunoDTO, String email){
+    public TurmaAlunoDTO add(TurmaAlunoDTO turmaAlunoDTO, String email) {
+        // 1. Busca aluno e turma
         Aluno aluno = alunoService.findByEmail(email);
-        Turma turma = turmaService.procurarPorId(turmaAlunoDTO.getIdTurma()).orElseThrow();
+        Turma turma = turmaService.procurarPorId(turmaAlunoDTO.getIdTurma())
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
 
-        TurmaAluno turmaAluno1 = new TurmaAluno();
+        // 2. Cria vínculo TurmaAluno
+        TurmaAluno turmaAluno = new TurmaAluno();
 
-        // Cria a chave composta
         TurmaAluno.TurmaAlunoId id = new TurmaAluno.TurmaAlunoId();
         id.setIdAluno(aluno.getId());
         id.setIdTurma(turma.getId());
-        turmaAluno1.setId(id);
+        turmaAluno.setId(id);
 
-        // Associa entidades
-        turmaAluno1.setAluno(aluno);
-        turmaAluno1.setTurma(turma);
-        turmaAluno1.setDataMatricula(LocalDate.now());
+        turmaAluno.setAluno(aluno);
+        turmaAluno.setTurma(turma);
+        turmaAluno.setDataMatricula(LocalDate.now());
 
-        repository.save(turmaAluno1);
-        return mapper.toDTO(turmaAluno1);
+        repository.save(turmaAluno);
+
+        // 3. Sincroniza com a relação ManyToMany (aluno_curso)
+        Curso curso = turma.getCurso();
+        if (curso != null && !aluno.getCursos().contains(curso)) {
+            aluno.getCursos().add(curso);
+            alunoService.add(aluno); // garante persistência no banco
+        }
+
+        // 4. Retorna DTO
+        return mapper.toDTO(turmaAluno);
     }
-
 
     public List<AlunoDTO> getTodosOsAlunosDaTurma(UUID idTurma) {
         List<TurmaAluno> turmasAlunos = repository.findByTurma_Id(idTurma);
@@ -55,5 +63,4 @@ public class TurmaAlunoService {
                 .map(ta -> alunoMapper.toDTO(ta.getAluno()))
                 .collect(Collectors.toList());
     }
-
 }

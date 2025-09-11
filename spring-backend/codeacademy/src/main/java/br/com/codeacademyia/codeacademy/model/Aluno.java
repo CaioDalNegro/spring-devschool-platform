@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,11 +29,13 @@ public class Aluno {
     @Column(name = "senha")
     private String senha;
 
+    // Na entidade Aluno
     @ManyToMany
     @JoinTable(
         name = "aluno_curso",
         joinColumns = @JoinColumn(name = "id_aluno"),
         inverseJoinColumns = @JoinColumn(name = "id_curso")
     )
+    @JsonIgnoreProperties("alunos") // evita loop
     private List<Curso> cursos = new ArrayList<>();
 }
