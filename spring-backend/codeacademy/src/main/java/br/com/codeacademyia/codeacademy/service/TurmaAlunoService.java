@@ -14,6 +14,7 @@ import br.com.codeacademyia.codeacademy.model.mapper.AlunoMapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,9 @@ public class TurmaAlunoService {
 
     public TurmaAlunoDTO add(TurmaAlunoDTO turmaAlunoDTO, String email) {
         // 1. Busca aluno e turma
-        Aluno aluno = alunoService.findByEmail(email);
+        Aluno aluno = alunoService.findByEmail(email) // agora Aluno e não Optional<Aluno>
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+
         Turma turma = turmaService.procurarPorId(turmaAlunoDTO.getIdTurma())
                 .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
 
@@ -36,7 +39,7 @@ public class TurmaAlunoService {
         TurmaAluno turmaAluno = new TurmaAluno();
 
         TurmaAluno.TurmaAlunoId id = new TurmaAluno.TurmaAlunoId();
-        id.setIdAluno(aluno.getId());
+        id.setIdAluno(aluno.getId());  // agora funciona, pois aluno é Aluno
         id.setIdTurma(turma.getId());
         turmaAluno.setId(id);
 

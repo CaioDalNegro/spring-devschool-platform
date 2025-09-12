@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +27,14 @@ public class AlunoService {
         return (Aluno) alunoRepository.findByEmailAndSenha(aluno.getEmail(), aluno.getSenha()).orElse(null);
     }
 
-    public Aluno findByEmail(String email) {
+    public Optional<Aluno> findByEmail(String email) {
         return alunoRepository.findByEmail(email);
     }
 
     public List<Curso> getCursosDoAluno(String email) {
-        Aluno aluno = alunoRepository.findByEmail(email);
-        if (aluno == null) {
-            throw new RuntimeException("Aluno não encontrado");
-        }
+        Aluno aluno = alunoRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+
         return aluno.getCursos();
     }
 }

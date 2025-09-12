@@ -6,8 +6,8 @@ import "../styles/dashboard.css";
 export default function DashboardAluno() {
   const [active, setActive] = useState("meusCursos");
   const [turmas, setTurmas] = useState([]);
-  const [loading, setLoading] = useState(true); // controle de carregamento
-  const [error, setError] = useState(null); // controle de erro
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   const token = localStorage.getItem("token");
 
@@ -22,9 +22,11 @@ export default function DashboardAluno() {
     fetch("http://localhost:8080/api/cursos/aluno/meus", {
       headers: {
         "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "email": "caio@gmail.com"
       },
     })
+
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Erro ao carregar cursos: ${res.status}`);
@@ -32,8 +34,19 @@ export default function DashboardAluno() {
         return res.json();
       })
       .then((data) => {
-        console.log("Cursos recebidos:", data); // 👀 debug no console
-        setTurmas(data);
+        console.log("Dados recebidos:", data);
+
+        // Extrai todas as turmas de todos os cursos
+        const cursos = data.cursos || [];
+        const turmasExtraidas = cursos.flatMap((curso) =>
+          curso.turmas.map((turma) => ({
+            ...turma,
+            cursoNome: curso.nome,   
+            cursoDescricao: curso.descricao,
+          }))
+        );
+
+        setTurmas(turmasExtraidas);
         setLoading(false);
       })
       .catch((err) => {
@@ -44,7 +57,7 @@ export default function DashboardAluno() {
   }, [token]);
 
   const handleEnviarDesafio = (turmaNome) => {
-    alert(`Enviando resposta para ${turmaNome} 🚀`);
+    alert(`Enviando resposta para a turma ${turmaNome} 🚀`);
   };
 
   return (
@@ -70,18 +83,18 @@ export default function DashboardAluno() {
           <div className="turmas-grid">
             {turmas.map((turma) => (
               <div className="turma-card" key={turma.id}>
-                <h2>{turma.nome}</h2>
+                <h2>{turma.cursoNome} - {turma.nome}</h2>
 
                 <div className="turma-info">
-                  <Users /> Professor: {turma.professor?.nome || "—"}
+                  <Users /> Alunos: {turma.alunos}
                 </div>
 
                 <div className="turma-info">
-                  <BarChart3 /> Progresso: {turma.progresso || 0}%
+                  <BookOpen /> Desafios: {turma.desafios}
                 </div>
 
                 <div className="turma-info">
-                  <BookOpen /> Desafios disponíveis
+                  <BarChart3 /> Curso: {turma.cursoDescricao}
                 </div>
 
                 <button onClick={() => handleEnviarDesafio(turma.nome)}>

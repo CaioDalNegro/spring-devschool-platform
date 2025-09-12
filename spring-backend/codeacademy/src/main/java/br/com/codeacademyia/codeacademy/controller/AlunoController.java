@@ -65,7 +65,7 @@ public class AlunoController {
 
         String token = authHeader.substring(7);
         String email = JwtUtil.getUsername(token);
-        Aluno aluno = alunoService.findByEmail(email);
+        Optional<Aluno> aluno = alunoService.findByEmail(email);
         return ResponseEntity.ok(aluno);
     }
 
