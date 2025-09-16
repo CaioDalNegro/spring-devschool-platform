@@ -1,0 +1,12 @@
+Para acessar o PostgreSQL via terminal do container:
+
+docker exec -it codeacademy psql -U postgres
+
+Após isso você entrará no prompt do PostgreSQL:
+postgres=#
+
+Aqui você já pode rodar comandos SQL:
+
+\l          -- lista os bancos
+\c nome_db  -- conecta em um banco
+\dt         -- lista tabelas
