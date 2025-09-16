@@ -4,31 +4,35 @@ import "../styles/sidebar.css";
 import { useNavigate } from "react-router-dom";
 
 export default function Sidebar({ active, setActive }) {
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  // Defina aqui as rotas corretas para cada página
   const menuItems = [
-  { id: "MeusDesafios", label: "Meus Desafios", icon: <ClipboardList size={20} />, path: "/home-professor" },
-  { id: "MeusCursos", label: "Meus Cursos", icon: <GraduationCap size={20} />, path: "/home-professor" },
-  { id: "perfil", label: "Perfil", icon: <User size={20} />, path: "/perfil" },
-];
+    {
+      id: "MeusDesafios",
+      label: "Meus Desafios",
+      icon: <ClipboardList size={20} />,
+      path: "/dashboard-professor", // Coloque a rota correta da tela de desafios
+    },
+    {
+      id: "MeusCursos",
+      label: "Meus Cursos",
+      icon: <GraduationCap size={20} />,
+      path: "/home-professor", // Rota para a página de cursos
+    },
+    {
+      id: "Perfil",
+      label: "Perfil",
+      icon: <User size={20} />,
+      path: "/perfil", // Rota para a página de perfil
+    },
+  ];
 
-   const deslogar = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        navigate("/");
-   }
-
-   const irParaDesafios = () => {
-      navigate("/home-professor"); // MUDAR AQUI FAZER ESSA PARTE DE DESAFIOS
-   }
-    
-   const irParaCursos = () => {
-      navigate("/home-professor");
-   }
-   
-   const irParaPerfil = () => {
-      navigate("/home-professor");
-   }
-   
+  const deslogar = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/"); // volta para login
+  };
 
   return (
     <aside className="sidebar">
@@ -40,7 +44,7 @@ const navigate = useNavigate();
               <button
                 className={active === item.id ? "active" : ""}
                 onClick={() => {
-                  setActive(item.id)
+                  setActive(item.id);
                   navigate(item.path);
                 }}
               >

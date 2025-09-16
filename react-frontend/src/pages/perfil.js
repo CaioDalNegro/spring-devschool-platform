@@ -30,7 +30,6 @@ export default function Perfil() {
 
   return (
     <div className="dashboard-container">
-      <Sidebar />
 
       <div className="main-content perfil-main">
         <div className="perfil-card">

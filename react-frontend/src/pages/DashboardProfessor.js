@@ -228,8 +228,6 @@ const navigate = useNavigate();
     
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
-      <Sidebar active={active} setActive={setActive} />
 
       {/* Conteúdo principal */}
       <main className="main-content">
