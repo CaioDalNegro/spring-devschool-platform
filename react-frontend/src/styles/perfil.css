@@ -1,0 +1,72 @@
+.perfil-main {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.perfil-card {
+  background-color: #181818;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  text-align: left; /* agora o conteúdo não está centralizado */
+  max-width: 500px;
+}
+
+.perfil-foto-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #8a2be2;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.perfil-card h2 {
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.perfil-card p {
+  color: #e5e7eb;
+  margin: 0.25rem 0;
+  font-size: 1rem;
+}
+
+.perfil-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 1rem;
+}
+
+.perfil-buttons button {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-editar {
+  background-color: #8a2be2;
+  color: #ffffff;
+}
+
+.btn-editar:hover {
+  background-color: #74479e;
+}
+
+.btn-senha {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.btn-senha:hover {
+  background-color: #dc2626;
+}
