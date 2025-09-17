@@ -78,7 +78,9 @@ export default function DashboardAluno() {
         ) : error ? (
           <p style={{ color: "red" }}>{error}</p>
         ) : turmas.length === 0 ? (
-          <p>Você ainda não está matriculado em nenhum curso.</p>
+          <div className="sem-turmas">
+            Você ainda não está matriculado em nenhum curso.
+          </div>
         ) : (
           <div className="turmas-grid">
             {turmas.map((turma) => (
