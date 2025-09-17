@@ -1,8 +1,17 @@
+/* ====== Reset ====== */
 body, html {
   margin: 0;
   padding: 0;
+  height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #212121;
+}
+
+/* ====== Container da Dashboard ====== */
+.dashboard-container {
+  display: flex;
+  height: 100vh; /* Ocupa toda a altura da tela */
+  width: 100%;
 }
 
 /* ====== Sidebar ====== */
@@ -12,8 +21,14 @@ body, html {
   color: #e5e7eb;
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* Espaço entre topo e rodapé */
   padding: 2rem 1rem;
   box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+  height: 100vh; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .sidebar h2 {
@@ -23,9 +38,15 @@ body, html {
   color: #ffffff;
 }
 
+/* Menu */
+.sidebar nav {
+  flex-grow: 1; /* O menu ocupa todo o espaço disponível */
+}
+
 .sidebar nav ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar nav ul li {
@@ -47,7 +68,7 @@ body, html {
 }
 
 .sidebar button:hover {
-  background-color: #303030; /* hover cinza */
+  background-color: #303030; /* Hover cinza */
 }
 
 .sidebar button.active {
@@ -60,12 +81,29 @@ body, html {
   margin-right: 0.5rem;
 }
 
+/* Logout */
 .sidebar .logout {
-  margin-top: auto;
   background-color: #ef4444;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
   transition: background 0.2s;
 }
 
 .sidebar .logout:hover {
   background-color: #dc2626;
+}
+
+/* ====== Conteúdo Principal ====== */
+.main-content {
+  margin-left: 250px; /* Espaço para a sidebar fixa */
+  padding: 2rem;
+  flex: 1;
+  overflow-y: auto; /* Scroll se necessário */
+  height: 100vh;
 }

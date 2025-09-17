@@ -7,9 +7,10 @@ import "../styles/perfil.css";
 export default function Perfil() {
   const navigate = useNavigate();
 
+  const [active, setActive] = useState("Perfil"); // define a aba ativa na sidebar
   const [emailLogado, setEmailLogado] = useState(null);
   const [roleLogado, setRoleLogado] = useState(null);
-  const [nome, setNome] = useState("Usuário"); // placeholder
+  const [nome, setNome] = useState("Usuário"); // placeholder de nome
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -30,8 +31,11 @@ export default function Perfil() {
 
   return (
     <div className="dashboard-container">
+      {/* Sidebar */}
+      <Sidebar active={active} setActive={setActive} />
 
-      <div className="main-content perfil-main">
+      {/* Conteúdo principal */}
+      <main className="main-content perfil-main">
         <div className="perfil-card">
           {/* Placeholder de foto */}
           <div className="perfil-foto-placeholder">
@@ -51,7 +55,7 @@ export default function Perfil() {
             </button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
