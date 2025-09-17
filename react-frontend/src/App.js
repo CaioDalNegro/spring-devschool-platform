@@ -13,13 +13,13 @@ function App() {
 
   return (
     <Router>
-      <div style={{ display: "flex" }}>
+      <div>
         {/* Exibe a sidebar somente se não estiver nas telas de login/cadastro */}
         {window.location.pathname !== "/" && window.location.pathname !== "/cadastro" && (
           <Sidebar active={active} setActive={setActive} />
         )}
 
-        <main style={{ flex: 1, padding: "20px" }}>
+        <main>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
