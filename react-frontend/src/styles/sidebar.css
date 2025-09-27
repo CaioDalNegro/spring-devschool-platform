@@ -1,109 +1,46 @@
-/* ====== Reset ====== */
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #212121;
-}
-
-/* ====== Container da Dashboard ====== */
-.dashboard-container {
-  display: flex;
-  height: 100vh; /* Ocupa toda a altura da tela */
-  width: 100%;
-}
-
-/* ====== Sidebar ====== */
+/* Sidebar fixa na esquerda */
 .sidebar {
+  background: #4338ca; /* Roxo indigo */
+  color: white;
   width: 250px;
-  background-color: #181818;
-  color: #e5e7eb;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Espaço entre topo e rodapé */
-  padding: 2rem 1rem;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
-  height: 100vh; 
-  position: fixed; 
-  top: 0;
-  left: 0;
-  bottom: 0;
+  height: 100vh;
+  padding: 20px;
 }
 
-.sidebar h2 {
-  font-size: 1.5rem;
+/* Logo */
+.logo {
+  font-size: 22px;
   font-weight: bold;
-  margin-bottom: 2rem;
-  color: #ffffff;
+  margin-bottom: 30px;
 }
 
 /* Menu */
-.sidebar nav {
-  flex-grow: 1; /* O menu ocupa todo o espaço disponível */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.sidebar nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar nav ul li {
-  margin-bottom: 1rem;
-}
-
-.sidebar button {
+.menu a {
   display: flex;
   align-items: center;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 12px;
-  background: none;
-  color: inherit;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  gap: 10px;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.2s;
 }
 
-.sidebar button:hover {
-  background-color: #303030; /* Hover cinza */
+.menu a:hover {
+  color: #a5b4fc; /* Indigo claro no hover */
 }
 
-.sidebar button.active {
-  background-color: #8a2be2;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+/* Botão sair */
+.menu .logout {
+  margin-top: 20px;
+  color: #f87171;
 }
 
-.sidebar button svg {
-  margin-right: 0.5rem;
-}
-
-/* Logout */
-.sidebar .logout {
-  background-color: #ef4444;
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.sidebar .logout:hover {
-  background-color: #dc2626;
-}
-
-/* ====== Conteúdo Principal ====== */
-.main-content {
-  margin-left: 250px; /* Espaço para a sidebar fixa */
-  padding: 2rem;
-  flex: 1;
-  overflow-y: auto; /* Scroll se necessário */
-  height: 100vh;
+.menu .logout:hover {
+  color: #dc2626;
 }

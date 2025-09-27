@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/SidebarProfessor"; // ajuste o caminho se necessário
+
+// Componentes
+import Sidebar from "./components/SidebarProfessor"; // Sidebar usada em professor/aluno
 import Login from "./pages/login";
 import Cadastro from "./pages/cadastro";
 import DashboardProfessor from "./pages/DashboardProfessor";
 import DashboardAluno from "./pages/DashboardAluno";
-import PaginaTurma from "./pages/Paginaturma"; 
-import Perfil from "./pages/perfil"; 
+import Perfil from "./pages/perfil";
+
+// Páginas de Turma
+import Paginaturma from "./pages/Paginaturma"; // Página para professor (nome exatamente igual ao arquivo)
+import PaginaTurmaAluno from "./pages/PaginaTurmaAluno"; // Página para aluno
 
 function App() {
-  const [active, setActive] = useState("MeusDesafios"); // estado para controlar botão ativo
+  const [active, setActive] = useState("MeusDesafios"); // Estado para controlar botão ativo na sidebar
 
   return (
     <Router>
@@ -21,12 +26,18 @@ function App() {
 
         <main>
           <Routes>
+            {/* Rotas públicas */}
             <Route path="/" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
+
+            {/* Dashboards */}
             <Route path="/home-aluno" element={<DashboardAluno />} />
             <Route path="/home-professor" element={<DashboardProfessor />} />
             <Route path="/perfil" element={<Perfil />} />
-            <Route path="/paginaturma/:id" element={<PaginaTurma />} />
+
+            {/* Turmas */}
+            <Route path="/paginaturma/:id" element={<Paginaturma />} /> {/* Professor */}
+            <Route path="/turma/:id" element={<PaginaTurmaAluno />} /> {/* Aluno */}
           </Routes>
         </main>
       </div>

@@ -1,63 +1,71 @@
 import React, { useState, useEffect } from "react";
-import { Users, BookOpen, BarChart3, PlusCircle } from "lucide-react";
+import { Users, BookOpen, BarChart3 } from "lucide-react";
 import SidebarAluno from "../components/SidebarAluno";
 import "../styles/dashboard.css";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardAluno() {
   const [active, setActive] = useState("meusCursos");
-  const [turmas, setTurmas] = useState([]);
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
+  const [cursos, setCursos] = useState([]); // cursos do aluno
+  const [turmasPorCurso, setTurmasPorCurso] = useState({}); // turmas agrupadas por curso
+  const [openCardPorId, setOpenCardPorId] = useState(null); // curso aberto no card
+  const [isModalOpen, setIsModalOpen] = useState(false); // modal de turmas
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (!token) {
-      console.warn("Nenhum token encontrado, redirecionando para login...");
       setError("Você precisa estar logado para ver seus cursos.");
       setLoading(false);
       return;
     }
 
+    // busca cursos do aluno
     fetch("http://localhost:8080/api/cursos/aluno/meus", {
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-        "email": "caio@gmail.com"
+        email: "caio@gmail.com",
       },
     })
-
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Erro ao carregar cursos: ${res.status}`);
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
-        console.log("Dados recebidos:", data);
+        const cursosRecebidos = data.cursos || [];
+        setCursos(cursosRecebidos);
 
-        // Extrai todas as turmas de todos os cursos
-        const cursos = data.cursos || [];
-        const turmasExtraidas = cursos.flatMap((curso) =>
-          curso.turmas.map((turma) => ({
-            ...turma,
-            cursoNome: curso.nome,   
-            cursoDescricao: curso.descricao,
-          }))
-        );
-
-        setTurmas(turmasExtraidas);
+        // extrai turmas por curso
+        const turmasPorCursoTemp = {};
+        cursosRecebidos.forEach((curso) => {
+          turmasPorCursoTemp[curso.id] = curso.turmas || [];
+        });
+        setTurmasPorCurso(turmasPorCursoTemp);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("Erro na requisição:", err);
+      .catch(() => {
         setError("Não foi possível carregar os cursos.");
         setLoading(false);
       });
   }, [token]);
 
-  const handleEnviarDesafio = (turmaNome) => {
-    alert(`Enviando resposta para a turma ${turmaNome} 🚀`);
+  const toggleCardCurso = (cursoId) => {
+    setOpenCardPorId(openCardPorId === cursoId ? null : cursoId);
+  };
+
+  const abrirModalTurmas = (cursoId) => {
+    setOpenCardPorId(cursoId); // abre o card do curso
+    setIsModalOpen(true);
+  };
+
+  const fecharModalTurmas = () => {
+    setIsModalOpen(false);
+    setOpenCardPorId(null);
+  };
+
+  const irParaTurma = (turmaId) => {
+    navigate(`/turma/${turmaId}`);
   };
 
   return (
@@ -67,43 +75,59 @@ export default function DashboardAluno() {
       <main className="main-content">
         <div className="main-header">
           <h1>Meus Cursos</h1>
-          <button className="create-btn">
-            <PlusCircle size={20} /> Novo Desafio
-          </button>
         </div>
 
-        {/* Exibe carregando, erro ou lista */}
         {loading ? (
           <p>Carregando cursos...</p>
         ) : error ? (
           <p style={{ color: "red" }}>{error}</p>
-        ) : turmas.length === 0 ? (
-          <div className="sem-turmas">
-            Você ainda não está matriculado em nenhum curso.
-          </div>
+        ) : cursos.length === 0 ? (
+          <p>Você ainda não está matriculado em nenhum curso.</p>
         ) : (
           <div className="turmas-grid">
-            {turmas.map((turma) => (
-              <div className="turma-card" key={turma.id}>
-                <h2>{turma.cursoNome} - {turma.nome}</h2>
+            {cursos.map((curso) => (
+              <div className="turma-card" key={curso.id}>
+                <h2>{curso.nome}</h2>
+                <p>{curso.descricao}</p>
 
-                <div className="turma-info">
-                  <Users /> Alunos: {turma.alunos}
-                </div>
-
-                <div className="turma-info">
-                  <BookOpen /> Desafios: {turma.desafios}
-                </div>
-
-                <div className="turma-info">
-                  <BarChart3 /> Curso: {turma.cursoDescricao}
-                </div>
-
-                <button onClick={() => handleEnviarDesafio(turma.nome)}>
-                  Enviar Resposta
-                </button>
+                 <button onClick={() => abrirModalTurmas(curso.id)}>
+                    Ver turmas
+                  </button>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Modal de turmas */}
+        {isModalOpen && openCardPorId && (
+          <div className="modal-overlay" onClick={fecharModalTurmas}>
+            <div
+              className="modal"
+              onClick={(e) => e.stopPropagation()} // previne fechamento ao clicar no modal
+            >
+              <h2>Turmas do Curso</h2>
+              {turmasPorCurso[openCardPorId] &&
+              turmasPorCurso[openCardPorId].length > 0 ? (
+                turmasPorCurso[openCardPorId].map((turma) => (
+                  <div className="turma-item" key={turma.id}>
+                    <span>{turma.nome}</span>
+                    <span>{turma.alunos} alunos</span>
+                    <span>{turma.desafios} desafios</span>
+                    <button onClick={() => irParaTurma(turma.id)}>
+                      Ver turma
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p>Não há turmas cadastradas neste curso.</p>
+              )}
+
+              <div className="modal-buttons">
+                <button type="button" onClick={fecharModalTurmas}>
+                  Fechar
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </main>

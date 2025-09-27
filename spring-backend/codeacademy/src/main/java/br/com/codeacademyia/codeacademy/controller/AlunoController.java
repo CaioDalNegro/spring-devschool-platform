@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import br.com.codeacademyia.codeacademy.config.JwtUtil;
 import br.com.codeacademyia.codeacademy.model.LoginResponse;
-import br.com.codeacademyia.codeacademy.model.Professor;
 import br.com.codeacademyia.codeacademy.model.TipoUsuario;
 import br.com.codeacademyia.codeacademy.repository.AlunoRepository;
 import br.com.codeacademyia.codeacademy.service.AlunoService;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.codeacademyia.codeacademy.model.Aluno; // Entidade Aluno
-import br.com.codeacademyia.codeacademy.model.Curso;
 
 /**
  * Controller responsável por gerenciar requisições relacionadas aos alunos.

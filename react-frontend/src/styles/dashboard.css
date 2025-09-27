@@ -3,6 +3,7 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #141e30, #243b55); /* fundo degradê */
 }
 
 /* ====== Container ====== */
@@ -12,6 +13,7 @@ body, html {
   width: 100%;
 }
 
+/* ====== Sidebar ====== */
 .sidebar {
   width: 250px;
   background-color: #181818;
@@ -20,13 +22,10 @@ body, html {
   flex-direction: column;
   padding: 2rem 1rem;
   box-shadow: 2px 0 8px rgba(0,0,0,0.2);
-  min-height: 100vh; /* garante que preencha a tela */
-}
-
-.main-content {
-  flex: 1;
-  padding: 2rem;
-  margin-left: 300px;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .sidebar h2 {
@@ -60,7 +59,7 @@ body, html {
 }
 
 .sidebar button:hover {
-  background-color: #303030; /* hover cinza */
+  background-color: #303030;
 }
 
 .sidebar button.active {
@@ -86,43 +85,23 @@ body, html {
 /* ====== Conteúdo Principal ====== */
 .main-content {
   flex: 1;
-  padding: 2rem;
+  margin-left: 250px; /* desloca o conteúdo para a direita da sidebar */
+  padding: 2rem;      /* espaço interno */
 }
 
-/* Título e botão criar turma */
+/* ===== Título e botão criar turma ===== */
 .main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  margin-left: 30px; /* desloca o conteúdo para a direita da sidebar */
 }
 
 .main-header h1 {
   font-size: 2rem;
   font-weight: bold;
   color: #ffffff;
-}
-
-.create-btn {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1.5rem;
-  background-color: #8a2be2;
-  color: #181818;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.2s;
-}
-
-.create-btn svg {
-  margin-right: 0.5rem;
-}
-
-.create-btn:hover {
-  background-color: #74479e;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 /* ====== Cards de Turmas ====== */
@@ -138,6 +117,7 @@ body, html {
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
+  margin-left: 30px; /* desloca o conteúdo para a direita da sidebar */
 }
 
 .turma-card:hover {
@@ -154,7 +134,7 @@ body, html {
 .lista-turmas {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* espaço entre turmas */
+  gap: 8px;
   margin-top: 10px;
 }
 
@@ -171,7 +151,6 @@ body, html {
   margin-right: 20px;
 }
 
-
 .turma-card p {
   font-size: 1.25rem;
   font-weight: 600;
@@ -183,7 +162,7 @@ body, html {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
-  color: #6a6f75; /* cinza médio */
+  color: #6a6f75;
 }
 
 .turma-info svg {
@@ -194,7 +173,7 @@ body, html {
   margin-top: 1rem;
   width: 100%;
   padding: 0.5rem 1rem;
-  background-color: #8a2be2; /* indigo */
+  background-color: #8a2be2;
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -208,21 +187,19 @@ body, html {
 }
 
 /* ===== Modal ===== */
-/* Fundo escuro cobrindo toda a tela */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6); /* transparência */
+  background-color: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* fica acima de tudo */
+  z-index: 1000;
 }
 
-/* Caixa do modal */
 .modal {
   background-color: #212121;
   padding: 2rem;
@@ -238,7 +215,6 @@ body, html {
   text-align: center;
 }
 
-/* Labels e inputs */
 .modal label {
   display: block;
   margin-bottom: 1rem;
@@ -255,7 +231,6 @@ body, html {
   color: #ffffff;
 }
 
-/* Botões do modal */
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
@@ -289,4 +264,3 @@ body, html {
 .modal-buttons button[type="button"]:hover {
   background-color: #444;
 }
-
